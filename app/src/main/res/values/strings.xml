@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">LoftMoney</string>
+    <string name="HelloWorld">LoftMoney</string>
+    <string name="enter">Enter</string>
+    <string name="product">Title</string>
+    <string name="price">Price</string>
+    <string name="app_add_button">Add</string>
 </resources>
