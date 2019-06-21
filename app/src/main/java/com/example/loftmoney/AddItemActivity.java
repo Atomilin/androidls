@@ -10,7 +10,7 @@ import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class add_item_activity extends AppCompatActivity {
+public class AddItemActivity extends AppCompatActivity {
 
     private EditText titleEdit, priceEdit;
     private  String title, price;

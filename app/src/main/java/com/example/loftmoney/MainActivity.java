@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
         enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, add_item_activity.class));
+                startActivity(new Intent(MainActivity.this, AddItemActivity.class));
             }
         });
     }
