@@ -13,7 +13,7 @@ import android.widget.EditText;
 public class AddItemActivity extends AppCompatActivity {
 
     private EditText titleEdit, priceEdit;
-    private  String title, price;
+    private String title, price;
     private Button addbutton;
 
     @Override
@@ -25,50 +25,47 @@ public class AddItemActivity extends AppCompatActivity {
         priceEdit = findViewById(R.id.price_edittext);
         addbutton = findViewById(R.id.add);
 
-        titleEdit.addTextChangedListener(new TextWatcher() {
+
+        TextWatcher generalTextWatcher = new TextWatcher() {
+
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
 
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                title = s.toString();
-                changeButtonTextColor();
-            }
-        });
-
-        priceEdit.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                price = s.toString();
-                changeButtonTextColor();
+                if (titleEdit.getText().hashCode() == s.hashCode())
+                {
+                    title = s.toString();
+                    changeButtonTextColor();
+                }
+                else if (priceEdit.getText().hashCode() == s.hashCode())
+                {
+                    price = s.toString();
+                    changeButtonTextColor();
+                }
             }
-        });
+            private void changeButtonTextColor () {
+                if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(price)) {
+                    addbutton.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.add_button_text_color));
+                } else {
+                    addbutton.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.add_button_color_inactive));
+                }
 
-    }
+            }
+        };
 
-    private void changeButtonTextColor(){
-        if(!TextUtils.isEmpty(title) && !TextUtils.isEmpty(price)) {
-            addbutton.setTextColor(ContextCompat.getColor(this, R.color.add_button_text_color));
-        } else {
-            addbutton.setTextColor(ContextCompat.getColor(this, R.color.add_button_color_inactive));
+        titleEdit.addTextChangedListener(generalTextWatcher);
+        priceEdit.addTextChangedListener(generalTextWatcher);
+
         }
 
     }
-}
+
