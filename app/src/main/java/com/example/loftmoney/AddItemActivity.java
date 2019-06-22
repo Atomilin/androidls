@@ -41,18 +41,16 @@ public class AddItemActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (titleEdit.getText().hashCode() == s.hashCode())
-                {
-                    title = s.toString();
+                if (titleEdit.getText().hashCode() == s.hashCode()) {
+                    title = s.toString().trim();
                     changeButtonTextColor();
-                }
-                else if (priceEdit.getText().hashCode() == s.hashCode())
-                {
-                    price = s.toString();
+                } else if (priceEdit.getText().hashCode() == s.hashCode()) {
+                    price = s.toString().trim();
                     changeButtonTextColor();
                 }
             }
-            private void changeButtonTextColor () {
+
+            private void changeButtonTextColor() {
                 if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(price)) {
                     addbutton.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.add_button_text_color));
                 } else {
@@ -65,7 +63,7 @@ public class AddItemActivity extends AppCompatActivity {
         titleEdit.addTextChangedListener(generalTextWatcher);
         priceEdit.addTextChangedListener(generalTextWatcher);
 
-        }
-
     }
+
+}
 
