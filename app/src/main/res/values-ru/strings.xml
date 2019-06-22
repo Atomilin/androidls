@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ЛофтДеньги</string>
+    <string name="HelloWorld">ЛофтДеньги</string>
+    <string name="enter">Войти</string>
+    <string name="product">Название</string>
+    <string name="price">Цена</string>
+    <string name="app_add_button">Добавить</string>
+</resources>
