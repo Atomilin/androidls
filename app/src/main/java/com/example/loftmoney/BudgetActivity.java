@@ -3,6 +3,7 @@ package com.example.loftmoney;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ public class BudgetActivity extends AppCompatActivity {
 
     public static final int REQUEST_CODE = 1001;
     private ItemsAdapter mItemsAdapter;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
@@ -27,7 +29,8 @@ public class BudgetActivity extends AppCompatActivity {
         recyclerView.setAdapter(mItemsAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        dividerItemDecoration.setDrawable(ContextCompat.getDrawable(this, R.drawable.divaider));
         recyclerView.addItemDecoration(dividerItemDecoration);
 
         mItemsAdapter.addItem(new Item("Молоко", 70));
@@ -35,6 +38,7 @@ public class BudgetActivity extends AppCompatActivity {
         mItemsAdapter.addItem(new Item("Сковорода с антипригарным покрытием", 1670));
         Button openAddScreenButton = findViewById(R.id.open_add_button_screen);
         openAddScreenButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 startActivityForResult(new Intent(BudgetActivity.this, AddItemActivity.class), REQUEST_CODE);
