@@ -5,4 +5,7 @@
     <string name="product">Title</string>
     <string name="price">Price</string>
     <string name="app_add_button">Add</string>
+    
+    <string name="price_template">%1$s ₽</string>
+    <string name="budget_title">Учет бюджета</string>
 </resources>
