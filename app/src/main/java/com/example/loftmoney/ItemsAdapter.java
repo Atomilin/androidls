@@ -33,8 +33,8 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
     }
 
     public void addItem (final Item item){
-        mItemList.add(item);
-        notifyItemInserted(mItemList.size());
+        mItemList.add(0, item);
+        notifyItemInserted(0);
     }
 
     static class ItemViewHolder extends RecyclerView.ViewHolder {
