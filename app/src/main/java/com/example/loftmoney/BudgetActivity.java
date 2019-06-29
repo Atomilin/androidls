@@ -5,20 +5,25 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v4.content.ContextCompat;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.Button;
 
 import java.util.Objects;
+
+import static com.example.loftmoney.R.string.income;
+import static com.example.loftmoney.R.string.outcome;
 
 public class BudgetActivity extends AppCompatActivity {
 
     public static final int REQUEST_CODE = 1001;
-    private ItemsAdapter mItemsAdapter;
+
+    private TabLayout mTabLayout;
+    private ViewPager mViewPager;
+    private BudgetViewPagerAdapter mViewPagerAdapter;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -27,40 +32,40 @@ public class BudgetActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_budget);
 
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        mViewPagerAdapter = new BudgetViewPagerAdapter(getSupportFragmentManager());
+        mTabLayout = findViewById(R.id.tab_layout);
+        mViewPager = findViewById(R.id.view_pager);
+        mViewPager.setAdapter(mViewPagerAdapter);
 
-        mItemsAdapter = new ItemsAdapter();
+        mTabLayout.setupWithViewPager(mViewPager);
 
-        recyclerView.setAdapter(mItemsAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mTabLayout.getTabAt(0).setText(outcome);
+        mTabLayout.getTabAt(1).setText(income);
 
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
-        dividerItemDecoration.setDrawable(Objects.requireNonNull(ContextCompat.getDrawable(this, R.drawable.divaider)));
-        recyclerView.addItemDecoration(dividerItemDecoration);
-
-        mItemsAdapter.addItem(new Item("Молоко", 70));
-        mItemsAdapter.addItem(new Item("Зубная щётка", 70));
-        mItemsAdapter.addItem(new Item("Сковорода с антипригарным покрытием", 1670));
-        Button openAddScreenButton = findViewById(R.id.open_add_button_screen);
-        openAddScreenButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                startActivityForResult(new Intent(BudgetActivity.this, AddItemActivity.class), REQUEST_CODE);
-            }
-        });
+        mTabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.tab_indicator_color));
     }
 
-    @Override
-    protected void onActivityResult(final int requestCode, final int resultCode, @Nullable final Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    static class BudgetViewPagerAdapter extends FragmentPagerAdapter {
 
-        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
-            Item item = null;
-            if (data != null) {
-                item = new Item(data.getStringExtra("name"), Integer.parseInt(data.getStringExtra("price")));
+        public BudgetViewPagerAdapter(FragmentManager fm) {
+            super(fm);
+
+        }
+
+        @Override
+        public Fragment getItem(int i) {
+            switch (i) {
+                case 0:
+                    return BudgetFragment.newInstance(R.color.dark_sky_blue);
+                case 1:
+                    return BudgetFragment.newInstance(R.color.income_price_color);
             }
-            mItemsAdapter.addItem(item);
+            return null;
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
         }
     }
 }
