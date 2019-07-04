@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("auth_token", response.body().getAuthToken());
+                editor.apply();
             }
 
             @Override
