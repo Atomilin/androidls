@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("auth_token", response.body().getAuth());
+                editor.putString("auth_token", response.body().getAuthToken());
             }
 
             @Override

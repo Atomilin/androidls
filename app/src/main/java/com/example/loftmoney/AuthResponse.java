@@ -6,7 +6,9 @@ class AuthResponse {
 
     private String status;
     private String id;
-    private String auth;
+
+    @SerializedName("auth_token")
+    private String authToken;
 
     public String getStatus() {
         return status;
@@ -24,14 +26,11 @@ class AuthResponse {
         this.id = id;
     }
 
-    @SerializedName("auth_token")
-    private String authToken;
-
-    public String getAuth() {
-        return auth;
+    public String getAuthToken() {
+        return authToken;
     }
 
-    public void setAuth(String auth) {
-        this.auth = auth;
+    public void setAuthToken(String auth) {
+        this.authToken  = authToken ;
     }
 }
