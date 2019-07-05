@@ -14,7 +14,7 @@ public class Item {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName( String name) {
         this.name = name;
     }
 
@@ -22,7 +22,7 @@ public class Item {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice( int price) {
         this.price = price;
     }
 }
