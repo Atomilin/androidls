@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -15,25 +16,33 @@
         android:layout_marginEnd="104dp"
         android:layout_marginRight="104dp"
         >
-        <EditText
-            android:id="@+id/title_edittext"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/product"
-            android:inputType="text"
-            android:textColor="@color/text_color_resurs"
-            android:textSize="24sp"/>
-        <EditText
-            android:id="@+id/price_edittext"
+            android:hint="@string/product">
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/title_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:textColor="@color/text_color_resurs"
+                android:inputType="text"/>
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/price"
-            android:inputType="number"
-            android:layout_marginTop="25dp"
-            android:textColor="@color/text_color_resurs"
-            android:textSize="24sp"/>
+            android:hint="@string/price">
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/price_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:textColor="@color/text_color_resurs"
+                android:inputType="text"/>
+        </android.support.design.widget.TextInputLayout>
+
     </LinearLayout>
-    <Button
+    <android.support.design.button.MaterialButton
         android:id="@+id/add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,6 +51,10 @@
         android:background="@null"
         android:text="@string/app_add_button"
         android:layout_gravity="center"
-        android:textColor="@color/add_button_color_inactive"/>
+        android:enabled="false"
+        android:textColor="@color/add_button_color"
+        app:icon="@drawable/ic_check_green"
+        app:iconTint="@color/add_button_color"
+        style="@style/Widget.MaterialComponents.Button.TextButton"/>
 
 </RelativeLayout>

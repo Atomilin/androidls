@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,6 +31,7 @@ public class BudgetFragment extends Fragment {
 
     public static final int REQUEST_CODE = 1001;
 
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private ItemsAdapter mItemsAdapter;
     private Api mApi;
 
@@ -67,6 +70,15 @@ public class BudgetFragment extends Fragment {
 
         RecyclerView recyclerView = fragmentView.findViewById(R.id.recycler_view);
 
+        mSwipeRefreshLayout = fragmentView.findViewById(R.id.refresh);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadItems();
+
+            }
+        });
+
         mItemsAdapter = new ItemsAdapter(getArguments().getInt(PRICE_COLOR));
 
         recyclerView.setAdapter(mItemsAdapter);
@@ -76,15 +88,6 @@ public class BudgetFragment extends Fragment {
         dividerItemDecoration.setDrawable(Objects.requireNonNull(ContextCompat.getDrawable(getContext(), R.drawable.divaider)));
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-
-        Button openAddScreenButton = fragmentView.findViewById(R.id.open_add_button_screen);
-        openAddScreenButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                startActivityForResult(new Intent(getContext(), AddItemActivity.class), REQUEST_CODE);
-            }
-        });
 
         return fragmentView;
     }
@@ -125,6 +128,7 @@ public class BudgetFragment extends Fragment {
         itemsResponseCall.enqueue(new Callback<List<Item>>() {
             @Override
             public void onResponse(final Call<List<Item>> call, final Response<List<Item>> response) {
+                mSwipeRefreshLayout.setRefreshing(false);
                 mItemsAdapter.clear();
                 List<Item> itemList = response.body();
 
@@ -135,6 +139,7 @@ public class BudgetFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<Item>> call, Throwable t) {
+                mSwipeRefreshLayout.setRefreshing(false);
 
             }
         });

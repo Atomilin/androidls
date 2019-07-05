@@ -62,12 +62,7 @@ public class AddItemActivity extends AppCompatActivity {
             }
 
             private void changeButtonTextColor() {
-                if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(price)) {
-                    addbutton.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.add_button_text_color));
-                } else {
-                    addbutton.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.add_button_color_inactive));
-                }
-
+                    addbutton.setEnabled(!TextUtils.isEmpty(title) && !TextUtils.isEmpty(price));
             }
         };
 
