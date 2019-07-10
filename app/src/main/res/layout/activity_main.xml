@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#3574fa"
+    android:background="@color/colorPrimary"
     android:orientation="vertical"
+    android:gravity="center"
     tools:context=".MainActivity">
 
 
@@ -13,30 +15,31 @@
         android:id="@+id/img"
         android:layout_width="93dp"
         android:layout_height="93dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="217dp"
-        android:src="@mipmap/icon" />
+        android:src="@drawable/icon_vector" />
 
     <TextView
         android:id="@+id/Title"
-        android:layout_width="174dp"
-        android:layout_height="42dp"
-        android:layout_gravity="center"
+        style="@style/TextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
-        android:gravity="center"
-        android:text="@string/HelloWorld"
-        android:textColor="#ffff"
-        android:textSize="30sp"
-        android:typeface="normal" />
+        android:layout_marginBottom="32dp"
+        android:text="@string/HelloWorld" />
 
-    <Button
+    <android.support.design.button.MaterialButton
         android:id="@+id/enter"
-        android:layout_width="130dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="32dp"
-        android:layout_gravity="center"
-        android:background="#ffff"
+        app:cornerRadius="24dp"
+        app:backgroundTint="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:textSize="14sp"
+        android:fontFamily="sans-serif-medium"
         android:text="@string/enter"
-        android:textColor="@color/enter_button_color"/>
+        android:textColor="@color/enter_button_color"
+        android:paddingStart="40dp"
+        android:paddingEnd="40dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"/>
 
 </LinearLayout>
