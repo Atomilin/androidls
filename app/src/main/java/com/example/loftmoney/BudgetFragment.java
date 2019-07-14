@@ -176,7 +176,7 @@ public class BudgetFragment extends Fragment implements  ItemAdapterListener, Ac
 
     @Override
     public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-
+        mActionMode = mode;
         return true;
     }
 
