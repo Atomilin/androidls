@@ -17,12 +17,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import static com.example.loftmoney.BudgetFragment.REQUEST_CODE;
 import static com.example.loftmoney.R.string.income;
 import static com.example.loftmoney.R.string.outcome;
 
-public class BudgetActivity extends AppCompatActivity {
+public class BudgetActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
 
     private Toolbar mToolbar;
 
@@ -45,10 +47,14 @@ public class BudgetActivity extends AppCompatActivity {
         mViewPager = findViewById(R.id.view_pager);
 
         mViewPager.setAdapter(mViewPagerAdapter);
+
+        mViewPager.addOnPageChangeListener(this);
+
         mTabLayout.setupWithViewPager(mViewPager);
 
         mTabLayout.getTabAt(0).setText(outcome);
         mTabLayout.getTabAt(1).setText(income);
+        mTabLayout.getTabAt(2).setText(R.string.balance);
 
         mTabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.tab_indicator_color));
 
@@ -74,11 +80,21 @@ public class BudgetActivity extends AppCompatActivity {
 
     }
 
+
     @Override
     public void onSupportActionModeStarted(@NonNull ActionMode mode) {
         super.onSupportActionModeStarted(mode);
         mToolbar.setBackgroundColor(ContextCompat.getColor(this,R.color.dark_grey_blue));
         mTabLayout.setBackgroundColor(ContextCompat.getColor(this,R.color.dark_grey_blue));
+
+        //
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(getResources().getColor(R.color.color_bar_action_mode));
+        }
+        //
+
         mFloatingActionButton.hide();
     }
 
@@ -87,7 +103,35 @@ public class BudgetActivity extends AppCompatActivity {
         super.onSupportActionModeFinished(mode);
         mToolbar.setBackgroundColor(ContextCompat.getColor(this,R.color.colorPrimary));
         mTabLayout.setBackgroundColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        //
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(getResources().getColor(R.color.colorPrimary));
+        }
+        //
+
         mFloatingActionButton.show();
+    }
+
+    @Override
+    public void onPageScrolled(int i, float v, int i1) {
+
+    }
+
+    @Override
+    public void onPageSelected(int i) {
+        if (i == 2){
+            mFloatingActionButton.hide();
+        } else {
+            mFloatingActionButton.show();
+        }
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int i) {
+
     }
 
     static class BudgetViewPagerAdapter extends FragmentPagerAdapter {
@@ -101,16 +145,18 @@ public class BudgetActivity extends AppCompatActivity {
         public Fragment getItem(int i) {
             switch (i) {
                 case 0:
-                    return BudgetFragment.newInstance(FragmentType.income);
-                case 1:
                     return BudgetFragment.newInstance(FragmentType.expence);
+                case 1:
+                    return BudgetFragment.newInstance(FragmentType.income);
+                case 2:
+                    return BalanceFragment.newInstance();
             }
             return null;
         }
 
         @Override
         public int getCount() {
-            return 2;
+            return 3;
         }
 
         /*@Override

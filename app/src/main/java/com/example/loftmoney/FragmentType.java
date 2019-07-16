@@ -2,8 +2,8 @@ package com.example.loftmoney;
 
 public enum FragmentType {
 
-    expence (R.color.income_price_color),
-    income (R.color.dark_sky_blue);
+    expence (R.color.dark_sky_blue),
+    income (R.color.income_price_color);
 
     FragmentType(int priceColor) {
         this.priceColor = priceColor;

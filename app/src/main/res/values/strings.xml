@@ -15,4 +15,6 @@
     <string name="income">Доходы</string>
     <string name="remove_title">Удалить</string>
     <string name="remove_confirmation">Вы действительно хотите удалить запись?</string>
+    <string name="balance">Баланс</string>
+    <string name="finances">Доступные финансы</string>
 </resources>

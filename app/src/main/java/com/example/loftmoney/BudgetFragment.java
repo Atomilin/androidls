@@ -163,15 +163,22 @@ public class BudgetFragment extends Fragment implements  ItemAdapterListener, Ac
             mItemsAdapter.toogleItem(position);
             mItemsAdapter.notifyDataSetChanged();
         }
+        mActionMode.setTitle("Выделено: "+ mItemsAdapter.getSelectedItemsIds().size());
+        if (mItemsAdapter.getSelectedItemsIds().size() ==  0){
+            mActionMode.setTitle("");
+            mActionMode.finish();
+        }
     }
 
     @Override
     public void onItemLongClick(Item item, int position) {
         mItemsAdapter.toogleItem(position);
         mItemsAdapter.notifyDataSetChanged();
+
         if (mActionMode == null) {
             ((AppCompatActivity) getActivity()).startSupportActionMode(this);
         }
+        mActionMode.setTitle("Выделено: "+ mItemsAdapter.getSelectedItemsIds().size());
     }
 
     @Override
@@ -192,6 +199,7 @@ public class BudgetFragment extends Fragment implements  ItemAdapterListener, Ac
         if (item.getItemId() == R.id.delete_menu_item) {
             showDialog();
         }
+
         return false;
     }
 
@@ -202,13 +210,14 @@ public class BudgetFragment extends Fragment implements  ItemAdapterListener, Ac
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         removeItems();
+                        mActionMode.finish();
 
                     }
                 })
                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        mActionMode.finish();
                     }
                 }).show();
 
