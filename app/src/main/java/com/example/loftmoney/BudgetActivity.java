@@ -145,7 +145,7 @@ public class BudgetActivity extends AppCompatActivity implements ViewPager.OnPag
         public Fragment getItem(int i) {
             switch (i) {
                 case 0:
-                    return BudgetFragment.newInstance(FragmentType.expence);
+                    return BudgetFragment.newInstance(FragmentType.expense);
                 case 1:
                     return BudgetFragment.newInstance(FragmentType.income);
                 case 2:
