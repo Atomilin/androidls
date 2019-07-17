@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -22,8 +21,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Objects;
@@ -55,16 +54,15 @@ public class BudgetFragment extends Fragment implements  ItemAdapterListener, Ac
         Bundle args = new Bundle();
         args.putInt(PRICE_COLOR, fragmentType.getPriceColor());
         args.putString(TYPE, fragmentType.name());
-
         fragment.setArguments(args);
+
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mApi = ((LoftApp) getActivity().getApplication()).getApi();
+        mApi = ((LoftApp) Objects.requireNonNull(getActivity()).getApplication()).getApi();
     }
 
     @Override
@@ -74,9 +72,9 @@ public class BudgetFragment extends Fragment implements  ItemAdapterListener, Ac
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View fragmentView = inflater.inflate(R.layout.fragment_budget, container, false);
 
         RecyclerView recyclerView = fragmentView.findViewById(R.id.recycler_view);
@@ -85,18 +83,22 @@ public class BudgetFragment extends Fragment implements  ItemAdapterListener, Ac
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                loadItems();
 
+                if (mActionMode != null) {
+                    mActionMode.finish();
+                }
+
+                loadItems();
             }
         });
 
-        mItemsAdapter = new ItemsAdapter(getArguments().getInt(PRICE_COLOR));
+        mItemsAdapter = new ItemsAdapter(Objects.requireNonNull(getArguments()).getInt(PRICE_COLOR));
         mItemsAdapter.setListener(this);
 
         recyclerView.setAdapter(mItemsAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(Objects.requireNonNull(getContext()), DividerItemDecoration.VERTICAL);
         dividerItemDecoration.setDrawable(Objects.requireNonNull(ContextCompat.getDrawable(getContext(), R.drawable.divaider)));
         recyclerView.addItemDecoration(dividerItemDecoration);
 
@@ -113,7 +115,7 @@ public class BudgetFragment extends Fragment implements  ItemAdapterListener, Ac
             final String token = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString(AUTH_TOKEN, "");
             final int price = Integer.parseInt(data.getStringExtra("price"));
             final String name = data.getStringExtra("name");
-            Call<Status> call = mApi.addItems(new AddItemRequest(price, name, getArguments().getString(TYPE)), token);
+            Call<Status> call = mApi.addItems(new AddItemRequest(price, name, Objects.requireNonNull(getArguments()).getString(TYPE)), token);
             call.enqueue(new Callback<Status>() {
                 @Override
                 public void onResponse(final Call<Status> call, final Response<Status> response) {
@@ -125,18 +127,12 @@ public class BudgetFragment extends Fragment implements  ItemAdapterListener, Ac
 
                 }
             });
-
-            /*Item item = null;
-            if (data != null) {
-                item = new Item(data.getStringExtra("name"), Integer.parseInt(data.getStringExtra("price")));
-            }*/
-            //mItemsAdapter.addItem(item);
         }
     }
 
     private void loadItems(){
         final String token = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString(AUTH_TOKEN, "");
-        Call<List<Item>> itemsResponseCall = mApi.getItems(getArguments().getString(TYPE), token);
+        Call<List<Item>> itemsResponseCall = mApi.getItems(Objects.requireNonNull(getArguments()).getString(TYPE), token);
         itemsResponseCall.enqueue(new Callback<List<Item>>() {
             @Override
             public void onResponse(final Call<List<Item>> call, final Response<List<Item>> response) {
@@ -144,7 +140,7 @@ public class BudgetFragment extends Fragment implements  ItemAdapterListener, Ac
                 mItemsAdapter.clear();
                 List<Item> itemList = response.body();
 
-                for (Item item : itemList){
+                for (Item item : Objects.requireNonNull(itemList)){
                     mItemsAdapter.addItem(item);
                 }
             }
@@ -176,9 +172,13 @@ public class BudgetFragment extends Fragment implements  ItemAdapterListener, Ac
         mItemsAdapter.notifyDataSetChanged();
 
         if (mActionMode == null) {
-            ((AppCompatActivity) getActivity()).startSupportActionMode(this);
+            ((AppCompatActivity) Objects.requireNonNull(getActivity())).startSupportActionMode(this);
         }
         mActionMode.setTitle("Выделено: "+ mItemsAdapter.getSelectedItemsIds().size());
+        if (mItemsAdapter.getSelectedItemsIds().size() ==  0){
+            mActionMode.setTitle("");
+            mActionMode.finish();
+        }
     }
 
     @Override
@@ -196,6 +196,7 @@ public class BudgetFragment extends Fragment implements  ItemAdapterListener, Ac
 
     @Override
     public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+
         if (item.getItemId() == R.id.delete_menu_item) {
             showDialog();
         }
@@ -204,7 +205,7 @@ public class BudgetFragment extends Fragment implements  ItemAdapterListener, Ac
     }
 
     private void showDialog() {
-        new AlertDialog.Builder(getContext())
+        new AlertDialog.Builder(Objects.requireNonNull(getContext()))
                 .setMessage(R.string.remove_confirmation)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
@@ -246,6 +247,7 @@ public class BudgetFragment extends Fragment implements  ItemAdapterListener, Ac
             }
         });
     }
+
 
     @Override
     public void onDestroyActionMode(ActionMode mode) {

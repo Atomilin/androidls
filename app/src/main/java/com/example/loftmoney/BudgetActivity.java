@@ -1,6 +1,7 @@
 package com.example.loftmoney;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,6 +20,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+
+import java.util.Objects;
 
 import static com.example.loftmoney.BudgetFragment.REQUEST_CODE;
 import static com.example.loftmoney.R.string.income;
@@ -52,9 +55,9 @@ public class BudgetActivity extends AppCompatActivity implements ViewPager.OnPag
 
         mTabLayout.setupWithViewPager(mViewPager);
 
-        mTabLayout.getTabAt(0).setText(outcome);
-        mTabLayout.getTabAt(1).setText(income);
-        mTabLayout.getTabAt(2).setText(R.string.balance);
+        Objects.requireNonNull(mTabLayout.getTabAt(0)).setText(outcome);
+        Objects.requireNonNull(mTabLayout.getTabAt(1)).setText(income);
+        Objects.requireNonNull(mTabLayout.getTabAt(2)).setText(R.string.balance);
 
         mTabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.tab_indicator_color));
 
@@ -68,16 +71,9 @@ public class BudgetActivity extends AppCompatActivity implements ViewPager.OnPag
                     if (fragment.getUserVisibleHint()) {
                         fragment.startActivityForResult(new Intent(BudgetActivity.this, AddItemActivity.class), REQUEST_CODE);
                     }
-
                 }
-
             }
         });
-
-
-        /*mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
-        mViewPagerAdapter.notifyDataSetChanged();*/
-
     }
 
 
@@ -86,14 +82,14 @@ public class BudgetActivity extends AppCompatActivity implements ViewPager.OnPag
         super.onSupportActionModeStarted(mode);
         mToolbar.setBackgroundColor(ContextCompat.getColor(this,R.color.dark_grey_blue));
         mTabLayout.setBackgroundColor(ContextCompat.getColor(this,R.color.dark_grey_blue));
+        mTabLayout.setTabTextColors(getResources().getColor(R.color.perrywinkle), getResources().getColor(R.color.white));
 
-        //
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(getResources().getColor(R.color.color_bar_action_mode));
         }
-        //
 
         mFloatingActionButton.hide();
     }
@@ -103,13 +99,13 @@ public class BudgetActivity extends AppCompatActivity implements ViewPager.OnPag
         super.onSupportActionModeFinished(mode);
         mToolbar.setBackgroundColor(ContextCompat.getColor(this,R.color.colorPrimary));
         mTabLayout.setBackgroundColor(ContextCompat.getColor(this,R.color.colorPrimary));
-        //
+        mTabLayout.setTabTextColors(getResources().getColor(R.color.white), getResources().getColor(R.color.white));
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(getResources().getColor(R.color.colorPrimary));
         }
-        //
 
         mFloatingActionButton.show();
     }
@@ -142,7 +138,7 @@ public class BudgetActivity extends AppCompatActivity implements ViewPager.OnPag
         }
 
         @Override
-        public Fragment getItem(int i) {
+        public Fragment getItem(int i){
             switch (i) {
                 case 0:
                     return BudgetFragment.newInstance(FragmentType.expense);
@@ -159,10 +155,6 @@ public class BudgetActivity extends AppCompatActivity implements ViewPager.OnPag
             return 3;
         }
 
-        /*@Override
-        public CharSequence getPageTitle(int position) {
-            return "Хз" + position;
-        }*/
 
     }
 
