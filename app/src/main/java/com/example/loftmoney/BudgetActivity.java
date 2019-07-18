@@ -35,6 +35,8 @@ public class BudgetActivity extends AppCompatActivity implements ViewPager.OnPag
     private ViewPager mViewPager;
     private BudgetViewPagerAdapter mViewPagerAdapter;
     private FloatingActionButton mFloatingActionButton;
+    private ActionMode actionMode;
+
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -85,11 +87,9 @@ public class BudgetActivity extends AppCompatActivity implements ViewPager.OnPag
         mTabLayout.setTabTextColors(getResources().getColor(R.color.perrywinkle), getResources().getColor(R.color.white));
 
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(getResources().getColor(R.color.color_bar_action_mode));
-        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+
+            actionMode = mode;
 
         mFloatingActionButton.hide();
     }
@@ -106,7 +106,7 @@ public class BudgetActivity extends AppCompatActivity implements ViewPager.OnPag
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(getResources().getColor(R.color.colorPrimary));
         }
-
+        actionMode = null;
         mFloatingActionButton.show();
     }
 
@@ -126,8 +126,13 @@ public class BudgetActivity extends AppCompatActivity implements ViewPager.OnPag
     }
 
     @Override
-    public void onPageScrollStateChanged(int i) {
-
+    public void onPageScrollStateChanged(int state) {
+        switch (state) {
+            case ViewPager.SCROLL_STATE_DRAGGING:
+            case ViewPager.SCROLL_STATE_SETTLING:
+                if (null != actionMode) actionMode.finish();
+                break;
+        }
     }
 
     static class BudgetViewPagerAdapter extends FragmentPagerAdapter {

@@ -79,6 +79,7 @@ public class BudgetFragment extends Fragment implements  ItemAdapterListener, Ac
 
         RecyclerView recyclerView = fragmentView.findViewById(R.id.recycler_view);
 
+
         mSwipeRefreshLayout = fragmentView.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
